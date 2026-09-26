@@ -104,6 +104,11 @@ function renderArtifactDetail(artifact) {
 	$("#detailTitle").textContent = artifact.artifact_id;
 	$("#detailSubtitle").textContent = `${artifact.filename_guess} · ${artifact.status}`;
 	$("#detailStatus").innerHTML = statusBadge(artifact.status);
+	$("#summaryArtifactId").textContent = artifact.artifact_id;
+	$("#summaryArtifactStatus").innerHTML = statusBadge(artifact.status);
+	$("#detailAssessment").textContent = assessmentSentence(artifact);
+	renderDecisionSummary(artifact);
+	renderHypotheses(artifact);
 	$("#previewMeta").textContent = artifact.output_path || "Preview unavailable";
 	const stage = $("#previewStage"); stage.innerHTML = "";
 	if (artifact.status === "RECOVERED") { const image = document.createElement("img"); image.src = `${API_BASE}/api/artifacts/${encodeURIComponent(artifact.artifact_id)}/preview`; image.alt = `Recovered preview for ${artifact.artifact_id}`; image.onerror = () => { stage.innerHTML = `<div class="preview-empty"><div class="empty-image-icon">▧</div><strong>Preview unavailable</strong><p>RECON-X could not establish a reliable visual reconstruction for this artifact.</p></div>`; }; stage.appendChild(image); } else { stage.innerHTML = `<div class="preview-empty"><div class="empty-image-icon">▧</div><strong>Preview unavailable</strong><p>RECON-X could not establish a reliable visual reconstruction for this artifact.</p></div>`; }
@@ -114,6 +119,47 @@ function renderArtifactDetail(artifact) {
 	renderTrail(artifact);
 	renderEvidenceMap(artifact);
 	const reasons = []; if (artifact.validation?.header_valid) reasons.push("JPEG signature detected."); else reasons.push("JPEG signature was not fully established."); if (artifact.validation?.structure_valid) reasons.push("JPEG structure validated."); else reasons.push("Structural validation failed."); if (artifact.validation?.decodable) reasons.push("JPEG successfully decoded."); else reasons.push("JPEG could not be established as reliably decodable."); if (artifact.reconstruction?.performed) reasons.push("Artifact was produced by controlled fragment reconstruction."); else if (artifact.status === "RECOVERED") reasons.push("Artifact was extracted as a validated candidate."); if (artifact.recovery_completeness === null) reasons.push("Recovery completeness is not established because the expected original size is unavailable."); $("#whyText").textContent = reasons.join(" ");
+}
+
+function assessmentSentence(artifact) {
+	if (artifact.status === "RECONSTRUCTED") return "Multiple evidence fragments were combined and the resulting artifact passed deterministic validation.";
+	if (artifact.status === "UNRELIABLE") return "The recovered bytes are insufficient to establish a trustworthy artifact.";
+	if (artifact.status === "PARTIAL") return "Some evidence was recovered, but a complete artifact could not be established.";
+	if (artifact.reconstruction?.performed && artifact.validation?.structure_valid) return "Multiple evidence fragments were combined and the resulting artifact passed deterministic validation.";
+	if (artifact.validation?.decodable && artifact.recovery_completeness === null) return "The file can be decoded, but exact recovery completeness cannot be established from the available evidence.";
+	if (artifact.validation?.structure_valid) return "JPEG structure is valid and the file can be decoded.";
+	return "The recovered bytes are insufficient to establish a trustworthy artifact.";
+}
+
+function factItem(text, kind = "known") { return `<div class="decision-fact ${kind}"><span aria-hidden="true">${kind === "known" ? "✓" : "?"}</span><p>${escapeHtml(text)}</p></div>`; }
+
+function renderDecisionSummary(artifact) {
+	const known = [];
+	if (artifact.validation?.header_valid) known.push("JPEG signature detected.");
+	if (artifact.validation?.footer_valid) known.push("Candidate boundary detected.");
+	if (artifact.validation?.structure_valid) known.push("JPEG structure is valid.");
+	if (artifact.validation?.decodable) known.push("File decoded successfully.");
+	if (artifact.recovered_size_bytes !== null && artifact.recovered_size_bytes !== undefined) known.push(`Recovered byte size: ${formatBytes(artifact.recovered_size_bytes)}.`);
+	if (artifact.evidence_offsets) known.push(`Observed evidence offsets: ${artifact.evidence_offsets.start} → ${artifact.evidence_offsets.end}.`);
+	const unknown = [...(artifact.evidence_state?.unknown || [])];
+	if (artifact.recovery_completeness === null || artifact.recovery_completeness === undefined) unknown.push("Recovery completeness unavailable.");
+	if (artifact.fragment_consistency === null || artifact.fragment_consistency === undefined) unknown.push("Fragment ordering/consistency unavailable.");
+	$("#knownFacts").innerHTML = known.length ? known.map((item) => factItem(item)).join("") : factItem("No measured facts available.", "unknown");
+	$("#unknownFacts").innerHTML = unknown.length ? [...new Set(unknown)].map((item) => factItem(item, "unknown")).join("") : factItem("No open questions recorded.", "known");
+	$("#systemConclusion").textContent = assessmentSentence(artifact);
+}
+
+function renderHypotheses(artifact) {
+	const hypotheses = artifact.hypotheses || [];
+	const section = $("#hypothesisSection");
+	section.hidden = hypotheses.length === 0;
+	if (!hypotheses.length) return;
+	$("#hypothesisList").innerHTML = hypotheses.map((hypothesis) => {
+		const statusClass = hypothesis.status.toLowerCase();
+		const chain = hypothesis.fragment_ids.map(escapeHtml).join(" → ");
+		const explanation = hypothesis.status === "SUPPORTED" ? "Fragments were combined and deterministic validation passed." : hypothesis.status === "PARTIAL" ? "Available evidence could not establish a complete reconstruction." : "Compatibility was insufficient or deterministic validation failed.";
+		return `<article class="hypothesis-card hypothesis-${statusClass}"><div class="hypothesis-chain"><strong>${chain}</strong><span class="hypothesis-status">${escapeHtml(hypothesis.status)}</span></div><div class="hypothesis-score">Fragment Compatibility Score: <strong>${Math.round(hypothesis.compatibility_score * 100)}%</strong></div><div class="hypothesis-flow">AI relationship signal <span>↓</span> reconstruction hypothesis <span>↓</span> deterministic validation</div><p>${escapeHtml(explanation)}</p>${hypothesis.contradiction ? `<div class="hypothesis-contradiction">Contradicted: high compatibility did not survive deterministic validation.</div>` : ""}</article>`;
+	}).join("");
 }
 
 function renderTrail(artifact) {
