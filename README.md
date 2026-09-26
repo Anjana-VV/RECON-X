@@ -1,6 +1,3 @@
-Yes. Since the project has now evolved significantly, your README should reflect the **actual differentiator** rather than the older version that only describes carving → reconstruction → confidence.
-
-I would replace the README with this version. It keeps your existing technical claims, adds the **Fragment Intelligence + Evidence Hypothesis/Contradiction Engine**, and is careful not to overclaim arbitrary fragment recovery.
 
 ````markdown
 # RECON-X
