@@ -1,0 +1,150 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ArtifactSchema",
+  "type": "object",
+  "properties": {
+    "artifact_id": {
+      "type": "string"
+    },
+    "filename_guess": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["RECOVERED", "RECONSTRUCTED", "PARTIAL", "UNRELIABLE", "UNRECOVERABLE"]
+    },
+    "fragments": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+      "fragment_details": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "fragment_id": { "type": "string" },
+            "chunk_index": { "type": ["integer", "null"] },
+            "offset_start": { "type": "integer", "minimum": 0 },
+            "offset_end": { "type": "integer", "minimum": 0 },
+            "footer_offset": { "type": "integer", "minimum": 0 },
+            "size_bytes": { "type": "integer", "minimum": 0 },
+            "predicted_type": { "type": "string" },
+            "status": { "type": "string" }
+          },
+          "required": ["fragment_id", "chunk_index", "offset_start", "offset_end", "footer_offset", "size_bytes", "predicted_type", "status"],
+          "additionalProperties": false
+        }
+      },
+      "evidence_offsets": {
+        "type": "object",
+        "properties": {
+          "start": { "type": "integer", "minimum": 0 },
+          "footer": { "type": "integer", "minimum": 0 },
+          "end": { "type": "integer", "minimum": 0 }
+        },
+        "required": ["start", "footer", "end"],
+        "additionalProperties": false
+      },
+    "expected_size_bytes": {
+      "type": ["integer", "null"],
+      "minimum": 0
+    },
+    "recovered_size_bytes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "recovery_completeness": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+      "validation": {
+        "type": "object",
+        "properties": {
+          "header_valid": { "type": "boolean" },
+          "footer_valid": { "type": "boolean" },
+          "decodable": { "type": "boolean" },
+          "structure_valid": { "type": "boolean" },
+          "corruption_detected": { "type": "boolean" }
+        },
+        "required": ["header_valid", "footer_valid", "decodable", "structure_valid", "corruption_detected"],
+        "additionalProperties": false
+      },
+      "reconstruction": {
+        "type": "object",
+        "properties": {
+          "performed": { "type": "boolean" },
+          "method": { "type": ["string", "null"] },
+          "fragment_ids": { "type": "array", "items": { "type": "string" } },
+          "chunk_indexes": { "type": "array", "items": { "type": "integer" } },
+          "output_size_bytes": { "type": ["integer", "null"], "minimum": 0 }
+        },
+        "required": ["performed", "method", "fragment_ids", "chunk_indexes", "output_size_bytes"],
+        "additionalProperties": false
+      },
+    "structural_integrity": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "classification_confidence": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "fragment_consistency": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "confidence_score": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "evidence_state": {
+      "type": "object",
+      "properties": {
+        "observed": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "reconstructed": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "inferred": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "unknown": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "required": ["observed", "reconstructed", "inferred", "unknown"],
+      "additionalProperties": false
+    },
+    "output_path": {
+      "type": ["string", "null"]
+    }
+  },
+  "required": [
+    "artifact_id",
+    "filename_guess",
+    "status",
+    "fragments",
+    "expected_size_bytes",
+    "recovered_size_bytes",
+    "recovery_completeness",
+    "structural_integrity",
+    "classification_confidence",
+    "fragment_consistency",
+    "confidence_score",
+    "evidence_state",
+    "output_path"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f7fa">
+  <title>RECON-X | Digital Evidence Reconstruction</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Primary navigation">
+      <div class="brand-lockup">
+        <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div>
+          <div class="brand-name">RECON-X</div>
+          <div class="brand-subtitle">Digital evidence<br>reconstruction</div>
+        </div>
+      </div>
+
+      <div class="sidebar-section-label">Workspace</div>
+      <nav class="primary-nav">
+        <button class="nav-item active" data-view="overview"><span class="nav-icon">◫</span><span>Overview</span></button>
+        <button class="nav-item" data-view="evidence"><span class="nav-icon">⊞</span><span>Evidence</span></button>
+        <button class="nav-item" data-view="artifacts"><span class="nav-icon">▤</span><span>Artifacts</span></button>
+        <button class="nav-item" data-view="analysis"><span class="nav-icon">◒</span><span>Analysis</span></button>
+        <button class="nav-item" data-view="case"><span class="nav-icon">⌁</span><span>Case information</span></button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="sidebar-section-label">System</div>
+        <div class="system-status"><span class="status-dot"></span><span>Analysis engine online</span></div>
+        <div class="version-label">RECON-X / v1.0</div>
+      </div>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <button class="icon-button menu-button" id="menuButton" aria-label="Open navigation">☰</button>
+        <div class="breadcrumb"><span>Workspace</span><b>/</b><strong id="breadcrumbView">Overview</strong></div>
+        <div class="topbar-meta">
+          <span class="case-chip" id="caseChip">NO ACTIVE CASE</span>
+          <span class="topbar-divider"></span>
+          <span class="topbar-date" id="topbarDate"></span>
+        </div>
+      </header>
+
+      <main class="main-content" id="mainContent">
+        <section class="view active" id="view-overview" aria-labelledby="overviewTitle">
+          <div class="page-heading">
+            <div>
+              <div class="eyebrow">Investigation workspace</div>
+              <h1 id="overviewTitle">Evidence analysis</h1>
+              <p>Review recovered digital evidence, reconstruction quality, and investigative confidence.</p>
+            </div>
+            <button class="button button-primary" data-view="evidence"><span>＋</span> New evidence</button>
+          </div>
+
+          <div class="case-banner" id="overviewCaseBanner">
+            <div class="case-banner-main">
+              <div class="case-kicker">Active case</div>
+              <h2 id="overviewCaseName">No evidence loaded</h2>
+              <div class="case-file-line"><span class="file-glyph">▱</span><span id="overviewFilename">Upload an evidence container to begin</span></div>
+            </div>
+            <div class="case-banner-meta">
+              <div><span>Case ID</span><strong id="overviewCaseId">—</strong></div>
+              <div><span>Analysis status</span><strong class="status-inline" id="overviewStatus">Awaiting evidence</strong></div>
+            </div>
+          </div>
+
+          <div class="metric-grid" id="summaryMetrics">
+            <div class="metric-card"><div class="metric-card-top"><span class="metric-label">JPEG candidates</span><span class="metric-icon blue">⌁</span></div><strong class="metric-value" id="metricCandidates">—</strong><span class="metric-description">Detected evidence regions</span></div>
+            <div class="metric-card"><div class="metric-card-top"><span class="metric-label">Recovered</span><span class="metric-icon green">✓</span></div><strong class="metric-value" id="metricRecovered">—</strong><span class="metric-description">Validated visual artifacts</span></div>
+            <div class="metric-card"><div class="metric-card-top"><span class="metric-label">Partial</span><span class="metric-icon amber">◐</span></div><strong class="metric-value" id="metricPartial">—</strong><span class="metric-description">Evidence requiring review</span></div>
+            <div class="metric-card"><div class="metric-card-top"><span class="metric-label">Uncertain</span><span class="metric-icon red">!</span></div><strong class="metric-value" id="metricUncertain">—</strong><span class="metric-description">Integrity concerns detected</span></div>
+          </div>
+
+          <div class="section-heading"><div><div class="eyebrow">Triage</div><h2>Evidence requiring attention</h2></div><button class="text-button" data-view="artifacts">View all artifacts <span>→</span></button></div>
+          <div class="table-shell priority-shell"><div class="table-scroll"><table><thead><tr><th>Artifact</th><th>Status</th><th>Confidence</th><th>Priority</th><th>Integrity</th><th>Recovery</th><th></th></tr></thead><tbody id="priorityTable"><tr><td colspan="7" class="empty-cell">Analyze an evidence file to populate the investigation.</td></tr></tbody></table></div></div>
+
+          <div class="section-heading pipeline-heading"><div><div class="eyebrow">Methodology</div><h2>Analysis pipeline</h2></div><span class="section-note">Transparent, measured workflow</span></div>
+          <div class="pipeline" id="overviewPipeline"></div>
+        </section>
+
+        <section class="view" id="view-evidence" aria-labelledby="evidenceTitle">
+          <div class="page-heading"><div><div class="eyebrow">Source handling</div><h1 id="evidenceTitle">Evidence source</h1><p>Upload and verify the original evidence container before analysis.</p></div></div>
+          <div class="upload-layout">
+            <div class="upload-panel">
+              <div class="drop-zone" id="dropZone" tabindex="0" role="button" aria-label="Select evidence file">
+                <div class="drop-icon">⇧</div><h2>Drop evidence image here</h2><p>Supported evidence containers: <strong>.img</strong>, <strong>.bin</strong></p>
+                <button class="button button-secondary" id="selectFileButton" type="button">Select evidence</button>
+                <input id="fileInput" type="file" hidden>
+                <div class="drop-selected" id="selectedFile" hidden></div>
+              </div>
+              <button class="button button-primary analyze-button" id="analyzeButton" disabled>Analyze evidence <span>→</span></button>
+              <div class="error-panel" id="uploadError" hidden></div>
+            </div>
+            <div class="source-panel" id="sourcePanel"><div class="panel-kicker">Current source</div><h2 id="sourceFilename">No source loaded</h2><div class="source-facts"><div><span>File type</span><strong id="sourceType">—</strong></div><div><span>File size</span><strong id="sourceSize">—</strong></div><div><span>Analysis status</span><strong id="sourceStatus">Awaiting upload</strong></div><div><span>Created</span><strong id="sourceCreated">—</strong></div></div><div class="hash-block"><div class="hash-label"><span>SHA-256</span><button class="copy-button" id="copyHashButton" disabled>Copy hash</button></div><code id="sourceHash">—</code><span class="copy-confirmation" id="copyConfirmation" aria-live="polite"></span></div></div>
+          </div>
+          <div class="handling-note"><span class="note-icon">i</span><div><strong>Evidence handling</strong><p>RECON-X analyzes evidence without modifying the original uploaded evidence.</p></div></div>
+        </section>
+
+        <section class="view" id="view-artifacts" aria-labelledby="artifactsTitle">
+          <div class="page-heading"><div><div class="eyebrow">Investigation inventory</div><h1 id="artifactsTitle">Recovered artifacts</h1><p>Artifacts identified and evaluated by RECON-X.</p></div><div class="view-count" id="artifactCount">0 artifacts</div></div>
+          <div class="toolbar"><div class="filter-group" role="group" aria-label="Filter artifacts"><button class="filter-button active" data-filter="ALL">All</button><button class="filter-button" data-filter="RECOVERED">Recovered</button><button class="filter-button" data-filter="RECONSTRUCTED">Reconstructed</button><button class="filter-button" data-filter="PARTIAL">Partial</button><button class="filter-button" data-filter="UNRELIABLE">Unreliable</button></div><label class="sort-control">Sort by <select id="sortSelect"><option value="priority">Priority</option><option value="confidence">Confidence</option><option value="recovery">Recovery</option><option value="integrity">Integrity</option></select></label></div>
+          <div class="table-shell artifact-shell"><div class="table-scroll"><table><thead><tr><th>Artifact</th><th>Filename</th><th>Status</th><th>Confidence</th><th>Priority</th><th>Recovery</th><th>Integrity</th><th>Action</th></tr></thead><tbody id="artifactTable"><tr><td colspan="8" class="empty-cell">No artifacts available. Upload and analyze evidence first.</td></tr></tbody></table></div></div>
+        </section>
+
+        <section class="view" id="view-detail" aria-labelledby="detailTitle">
+          <button class="back-button" data-view="artifacts">← Back to artifacts</button>
+          <div class="page-heading detail-heading"><div><div class="eyebrow">Artifact assessment</div><h1 id="detailTitle">Artifact detail</h1><p id="detailSubtitle">Measured evidence and reconstruction context.</p></div><div id="detailStatus"></div></div>
+          <div class="detail-grid"><div class="preview-panel"><div class="panel-header"><div><div class="eyebrow">Visual evidence</div><h2>Recovered preview</h2></div><span id="previewMeta">—</span></div><div class="preview-stage" id="previewStage"><div class="preview-empty"><div class="empty-image-icon">▧</div><strong>Preview unavailable</strong><p>RECON-X could not establish a reliable visual reconstruction for this artifact.</p></div></div></div><div class="assessment-panel"><div class="panel-header"><div><div class="eyebrow">Evidence quality</div><h2>Reconstruction assessment</h2></div></div><div class="score-block"><span>Reconstruction confidence</span><strong id="detailConfidence">Not established</strong><span class="confidence-label" id="detailConfidenceLabel">UNAVAILABLE</span></div><div class="detail-metrics" id="detailMetrics"></div><div class="priority-callout"><span>Evidence priority</span><strong id="detailPriority">Not established</strong></div></div></div>
+          <div class="section-heading detail-section-heading"><div><div class="eyebrow">Forensic record</div><h2>Evidence state</h2></div></div><div class="evidence-state-grid" id="evidenceStateGrid"></div>
+          <div class="trail-section"><div class="section-heading detail-section-heading"><div><div class="eyebrow">Provenance</div><h2>Forensic Reconstruction Trail</h2><p class="section-note">Measured facts and decisions retained for this artifact.</p></div></div><div class="trail-grid" id="trailGrid"></div></div>
+          <div class="evidence-map-section"><div class="section-heading detail-section-heading"><div><div class="eyebrow">Evidence location</div><h2>Evidence map</h2></div></div><div class="evidence-map" id="evidenceMap"></div></div>
+          <div class="why-panel"><div class="why-icon">?</div><div><div class="eyebrow">Interpretation</div><h2>Why this assessment?</h2><p id="whyText">Assessment explanations will appear when an artifact is selected.</p></div></div>
+        </section>
+
+        <section class="view" id="view-analysis" aria-labelledby="analysisTitle"><div class="page-heading"><div><div class="eyebrow">Technical record</div><h1 id="analysisTitle">Analysis pipeline</h1><p>A transparent view of how RECON-X processed the active evidence.</p></div></div><div class="analysis-stage-list" id="analysisStages"></div></section>
+
+        <section class="view" id="view-case" aria-labelledby="caseTitle"><div class="page-heading"><div><div class="eyebrow">Case record</div><h1 id="caseTitle">Case information</h1><p>Source metadata and analysis lifecycle for the active investigation.</p></div></div><div class="case-info-layout"><div class="metadata-panel" id="caseMetadata"></div><div class="handling-note large-note"><span class="note-icon">i</span><div><strong>Evidence handling</strong><p>RECON-X analyzes evidence without modifying the original uploaded evidence. Runtime analysis is based only on the uploaded bytes and measured pipeline results.</p></div></div></div></section>
+
+        <section class="loading-overlay" id="loadingState" hidden><div class="loading-card"><div class="loading-mark"><span></span><span></span><span></span></div><div class="eyebrow">Processing evidence</div><h2>Analyzing evidence</h2><p>RECON-X is moving through the measured reconstruction pipeline.</p><div class="loading-stages" id="loadingStages"></div></div></section>
+      </main>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>

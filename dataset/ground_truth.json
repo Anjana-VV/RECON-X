@@ -1,0 +1,166 @@
+{
+  "dataset_version": "1.0",
+  "evidence_file": "incident_disk.img",
+  "records": [
+    {
+      "record_id": "GT-001",
+      "original_file": "evidence_01.jpg",
+      "original_sha256": "b6b2713b28d8893b3cf36c290b6b0e4524025d45c8ba686807806b442ec02516",
+      "original_size_bytes": 7244,
+      "damage_type": "intact",
+      "recoverable": true,
+      "evidence_offset_start": 4096,
+      "evidence_offset_end": 11340,
+      "chunks": [],
+      "corrupted_bytes": 0,
+      "corruption_range": null,
+      "duplicated_bytes": 0,
+      "duplicate_range": null,
+      "deleted_bytes": 0,
+      "reused_original": false
+    },
+    {
+      "record_id": "GT-002",
+      "original_file": "evidence_02.jpg",
+      "original_sha256": "5e27e1ae785b46a5babce88909738496fb244ebe0fc2bc5394a7286f57d0f870",
+      "original_size_bytes": 8269,
+      "damage_type": "split",
+      "recoverable": true,
+      "evidence_offset_start": 15436,
+      "evidence_offset_end": 27801,
+      "chunks": [
+        {
+          "chunk_index": 0,
+          "offset_start": 15436,
+          "offset_end": 19570,
+          "size_bytes": 4134
+        },
+        {
+          "chunk_index": 1,
+          "offset_start": 23666,
+          "offset_end": 27801,
+          "size_bytes": 4135
+        }
+      ],
+      "corrupted_bytes": 0,
+      "corruption_range": null,
+      "duplicated_bytes": 0,
+      "duplicate_range": null,
+      "deleted_bytes": 0,
+      "reused_original": false
+    },
+    {
+      "record_id": "GT-003",
+      "original_file": "evidence_03.jpg",
+      "original_sha256": "92d5ca5b7a81b82bbdd178f8ffc582e1cc14c3066b6d141358146fc5351e5595",
+      "original_size_bytes": 7498,
+      "damage_type": "split",
+      "recoverable": true,
+      "evidence_offset_start": 31897,
+      "evidence_offset_end": 47587,
+      "chunks": [
+        {
+          "chunk_index": 0,
+          "offset_start": 31897,
+          "offset_end": 34396,
+          "size_bytes": 2499
+        },
+        {
+          "chunk_index": 1,
+          "offset_start": 38492,
+          "offset_end": 40991,
+          "size_bytes": 2499
+        },
+        {
+          "chunk_index": 2,
+          "offset_start": 45087,
+          "offset_end": 47587,
+          "size_bytes": 2500
+        }
+      ],
+      "corrupted_bytes": 0,
+      "corruption_range": null,
+      "duplicated_bytes": 0,
+      "duplicate_range": null,
+      "deleted_bytes": 0,
+      "reused_original": false
+    },
+    {
+      "record_id": "GT-004",
+      "original_file": "evidence_04.jpg",
+      "original_sha256": "b67a5410a064a357fa7360b9622c8729a2977fd06eead79f54400eb424232534",
+      "original_size_bytes": 8025,
+      "damage_type": "corrupted",
+      "recoverable": true,
+      "evidence_offset_start": 51683,
+      "evidence_offset_end": 59708,
+      "chunks": [],
+      "corrupted_bytes": 401,
+      "corruption_range": {
+        "start": 55495,
+        "end": 55896
+      },
+      "duplicated_bytes": 0,
+      "duplicate_range": null,
+      "deleted_bytes": 0,
+      "reused_original": false
+    },
+    {
+      "record_id": "GT-005",
+      "original_file": "evidence_05.jpg",
+      "original_sha256": "c3a516734faa0a31377ffae91edb55cc88c1814d483f266d017daea8cdf55f02",
+      "original_size_bytes": 7723,
+      "damage_type": "corrupted",
+      "recoverable": true,
+      "evidence_offset_start": 63804,
+      "evidence_offset_end": 71527,
+      "chunks": [],
+      "corrupted_bytes": 386,
+      "corruption_range": {
+        "start": 67472,
+        "end": 67858
+      },
+      "duplicated_bytes": 0,
+      "duplicate_range": null,
+      "deleted_bytes": 0,
+      "reused_original": false
+    },
+    {
+      "record_id": "GT-006",
+      "original_file": "evidence_06.jpg",
+      "original_sha256": "093c4a191fce5c336781479ecdbc35c2f91c9104a612fb54629d48284db73c5a",
+      "original_size_bytes": 7673,
+      "damage_type": "duplicated",
+      "recoverable": true,
+      "evidence_offset_start": 75623,
+      "evidence_offset_end": 84063,
+      "chunks": [],
+      "corrupted_bytes": 0,
+      "corruption_range": null,
+      "duplicated_bytes": 767,
+      "duplicate_range": {
+        "start": 78947,
+        "end": 79714
+      },
+      "deleted_bytes": 0,
+      "reused_original": false
+    },
+    {
+      "record_id": "GT-007",
+      "original_file": "evidence_07.jpg",
+      "original_sha256": "a3fa8cbace1ddcae9236825ac79234cce1b40ee9b7664f7bd5b3c373bbae4713",
+      "original_size_bytes": 8631,
+      "damage_type": "deleted_unavailable",
+      "recoverable": false,
+      "evidence_offset_start": null,
+      "evidence_offset_end": null,
+      "chunks": [],
+      "corrupted_bytes": 0,
+      "corruption_range": null,
+      "duplicated_bytes": 0,
+      "duplicate_range": null,
+      "deleted_bytes": 8631,
+      "reused_original": false
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CaseSchema",
+  "type": "object",
+  "properties": {
+    "case_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "filename": { "type": "string" },
+        "size_bytes": { "type": "integer", "minimum": 0 },
+        "sha256": { "type": "string" }
+      },
+      "required": ["filename", "size_bytes", "sha256"],
+      "additionalProperties": false
+    },
+    "analysis": {
+      "type": "object",
+      "properties": {
+        "status": { "type": "string", "enum": ["PENDING", "PROCESSING", "COMPLETED", "FAILED"] },
+        "started_at": { "type": ["string", "null"] },
+        "completed_at": { "type": ["string", "null"] }
+      },
+      "required": ["status", "started_at", "completed_at"],
+      "additionalProperties": false
+    },
+    "summary": {
+      "type": "object",
+      "properties": {
+        "regions_detected": { "type": "integer", "minimum": 0 },
+        "jpeg_candidates": { "type": "integer", "minimum": 0 },
+        "recovered": { "type": "integer", "minimum": 0 },
+        "partially_recovered": { "type": "integer", "minimum": 0 },
+        "uncertain": { "type": "integer", "minimum": 0 }
+      },
+      "required": [
+        "regions_detected",
+        "jpeg_candidates",
+        "recovered",
+        "partially_recovered",
+        "uncertain"
+      ],
+      "additionalProperties": false
+    },
+    "artifacts": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "required": [
+    "case_id",
+    "name",
+    "created_at",
+    "source",
+    "analysis",
+    "summary",
+    "artifacts"
+  ],
+  "additionalProperties": false
+}
